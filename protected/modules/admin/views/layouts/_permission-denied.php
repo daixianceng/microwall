@@ -1,0 +1,1 @@
+<p class="bg-danger remind"><?php echo Yii::t('AdminModule.global', 'Permission Denied.')?></p>

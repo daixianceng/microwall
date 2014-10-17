@@ -1,0 +1,110 @@
+@CHARSET "UTF-8";
+
+.simpenEditer {
+	background:#fff;
+	position:relative;
+	border:1px solid #ccc;
+}
+.simpenEditer ul {
+	display:block;
+	padding:0;
+	margin:0;
+	list-style:none;
+	min-height:30px;
+	border:0;
+	border-bottom:1px dashed #ccc;
+}
+.simpenEditer ul:hover {
+	border-bottom-color:#999;
+}
+.simpenEditer ul li {
+	float:left;
+	border:1px solid #ccc;
+	background:#fff;
+	margin:3px 0 0 5px;
+	text-align:center;
+	list-style:none;
+	cursor:pointer;
+	border-radius:3px;
+}
+.simpenEditer ul li a {
+	color:#999;
+	padding:2px 6px;
+	display:block;
+	text-decoration:none;
+}
+.simpenEditer ul li:hover {
+	border-color:#999;
+	background:#999;
+}
+.simpenEditer ul li:hover a {
+	color:#fff;
+}
+.simpenEditer iframe {
+	border:0;
+	width:100%;
+}
+.simpenEditer .simpenCenter {
+	position:absolute;
+	left:50%;
+	top:50px;
+}
+.simpenEditer .simpenBox {
+	position:relative;
+	margin:0;
+	top:0;
+	left:-50%;
+	box-shadow:0 2px 8px #eee;
+	background:#fff;
+	border-radius:3px;
+	border:1px solid #ccc;
+	overflow:hidden;
+	display:none;
+}
+.simpenEditer .simpenUpload {
+	display:none;
+}
+.simpenEditer .simpenTitle {
+	height:20px;
+	line-height:18px;
+	padding:5px 10px 0 10px;
+	color:#ccc;
+	font-weight:bold;
+}
+.simpenEditer .simpenText {
+	padding:10px;
+}
+.simpenEditer .simpenText textarea {
+	resize:vertical;
+	min-width:200px;
+	min-height:80px;
+	width:100%;
+	height:100%;
+	padding:0;
+	margin:0;
+	line-height:20px;
+	color:#333;
+	font-family:"Microsoft yahei";
+}
+.simpenEditer .simpenButtons {
+	height:30px;
+	border-top:1px solid #ccc;	
+}
+.simpenEditer .simpenButtons div {
+	float:left;
+	width:50%;
+	height:30px;
+	text-align:center;
+}
+.simpenEditer .simpenButtons button {
+	width:100%;
+	height:100%;
+	border:0;
+	background:#fff;
+	color:#ccc;
+	outline:none;
+}
+.simpenEditer .simpenButtons button:hover {
+	background:#8A8A8A;
+	color:#fff;
+}
