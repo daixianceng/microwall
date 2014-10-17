@@ -63,13 +63,13 @@ class Microwall_Image
 	    switch ($this->_suffix) {
 	    	case 'jpg':
 	    	case 'jpeg':
-	    	    $resource = imagecreatefromjpeg($this->_filename);
+	    	    @$resource = imagecreatefromjpeg($this->_filename);
 	    	    break;
 	    	case 'gif':
-	    	    $resource = imagecreatefromgif($this->_filename);
+	    	    @$resource = imagecreatefromgif($this->_filename);
 	    	    break;
 	    	case 'png':
-	    	    $resource = imagecreatefrompng($this->_filename);
+	    	    @$resource = imagecreatefrompng($this->_filename);
 	    	    break;
 	    	default:
 	    	    throw new Exception('图片格式不允许');
