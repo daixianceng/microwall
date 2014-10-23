@@ -24,7 +24,7 @@ class SiteController extends Controller
 			'AjaxOnly + postAjax, ajax, comments, comment',
 			array(
 				'COutputCache + index, category, post, ajax, postAjax',
-				'duration' => 7200,
+				'duration' => Yii::app()->params['cacheDuration'],
 				'varyByParam' => array('slug', 'category', 'start', 'id'),
 			),
 		);
@@ -107,9 +107,8 @@ class SiteController extends Controller
 	{
 		$post = Post::model()->find('slug=:slug AND status=:status', array(':slug' => $slug, ':status' => Post::STATUS_PUBLISHED));
 		
-		if (!$post) {
+		if (!$post)
 			throw new CHttpException('404', 'Article not found.');
-		}
 		
 		$category = Category::model()->findByPk($post->category);
 		

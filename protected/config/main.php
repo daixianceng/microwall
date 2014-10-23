@@ -9,7 +9,7 @@ return array(
 	'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
 	'name' => 'Microwall - The open source high-performance blog management system',
 	'theme' => 'googleplus',
-	'timeZone' => 'Asia/Shanghai',
+	'timeZone' => 'Asia/Hong_Kong',
 	'language' => 'en_us',
 
 	// preloading 'log' component
@@ -126,6 +126,7 @@ return array(
 	'params' => array(
 		// this is used in contact page
 		'keywords' => '',
-		'description' => 'The open source high-performance blog management system. Developed and released by Microwall Studio'
+		'description' => 'The open source high-performance blog management system. Developed and released by Microwall Studio',
+		'cacheDuration' => 0
 	),
 );

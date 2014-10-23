@@ -14,9 +14,8 @@ class PostController extends AdminController
 		
 		$pages = new CPagination($count);
 		
-		if ($page < 0 || $page > $pages->pageCount) {
+		if ($page < 0 || $page > $pages->pageCount)
 			throw new CHttpException('404', 'This page was not found.');
-		}
 		
 		$pages->currentPage = $page;
 		$pages->applyLimit($criteria);
@@ -34,9 +33,8 @@ class PostController extends AdminController
 		
 		$criteria = new CDbCriteria();
 		
-		if (is_int($category) && Category::model()->exists('id=:id', array(':id' => $category))) {
+		if (is_int($category) && Category::model()->exists('id=:id', array(':id' => $category)))
 			$criteria->addColumnCondition(array('category' => $category));
-		}
 		
 		$criteria->addColumnCondition(array('status' => Post::STATUS_PUBLISHED));
 		$criteria->select = 'id, title, slug, date_publish, author';
@@ -65,9 +63,8 @@ class PostController extends AdminController
 		
 		$criteria = new CDbCriteria();
 		
-		if (is_int($category) && Category::model()->exists('id=:id', array(':id' => $category))) {
+		if (is_int($category) && Category::model()->exists('id=:id', array(':id' => $category)))
 			$criteria->addColumnCondition(array('category' => $category));
-		}
 		
 		$criteria->addColumnCondition(array('status' => Post::STATUS_ARCHIVED));
 		$criteria->select = 'id, title, date_update, author';
@@ -96,9 +93,8 @@ class PostController extends AdminController
 		
 		$criteria = new CDbCriteria();
 		
-		if (is_int($category) && Category::model()->exists('id=:id', array(':id' => $category))) {
+		if (is_int($category) && Category::model()->exists('id=:id', array(':id' => $category)))
 			$criteria->addColumnCondition(array('category' => $category));
-		}
 		
 		$criteria->addColumnCondition(array('status' => Post::STATUS_RECYCLED));
 		$criteria->select = 'id, title, date_trash, author';

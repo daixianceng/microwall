@@ -9,7 +9,7 @@ return array(
 	'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
 	'name' => '<name>',
 	'theme' => '<theme>',
-	'timeZone' => 'Asia/Shanghai',
+	'timeZone' => '<timezone>',
 	'language' => '<language>',
 
 	// preloading 'log' component
@@ -126,6 +126,7 @@ return array(
 	'params' => array(
 		// this is used in contact page
 		'keywords' => '<keywords>',
-		'description' => '<description>'
+		'description' => '<description>',
+		'cacheDuration' => <duration>
 	),
 );
