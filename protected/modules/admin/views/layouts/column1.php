@@ -15,7 +15,7 @@
           <ul class="nav navbar-nav">
             <li<?php echo $this->menu === 'default' ? ' class="active"' : '';?>><a href="<?php echo $this->createUrl('default/index');?>"><?php echo Yii::t('AdminModule.global', 'Dashboard')?></a></li>
             <li<?php echo $this->menu === 'writing' ? ' class="active"' : '';?>><a href="<?php echo $this->createUrl('post/writing');?>"><?php echo Yii::t('AdminModule.global', 'Fast Writing')?></a></li>
-            <li><a target="_blank" href="<?php echo Yii::app()->baseUrl;?>"><?php echo Yii::t('AdminModule.global', 'Website')?></a></li>
+            <li><a target="_blank" href="<?php echo Yii::app()->getBaseUrl(true);?>"><?php echo Yii::t('AdminModule.global', 'Website')?></a></li>
           </ul>
           <ul class="nav navbar-nav pull-right">
             <li><a href="<?php echo $this->createUrl('default/logout');?>"><?php echo Yii::t('AdminModule.global', 'Logout')?></a></li>
