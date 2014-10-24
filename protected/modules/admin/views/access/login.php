@@ -50,7 +50,7 @@ body {
   </div>
   <div class="form-group">
     <div class="col-md-offset-3 col-md-9">
-      <strong><a href="<?php echo Yii::app()->baseUrl?>"><?php echo Yii::t('AdminModule.access', 'Back Home')?></a></strong>
+      <strong><a href="<?php echo Yii::app()->getBaseUrl(true)?>"><?php echo Yii::t('AdminModule.access', 'Back Home')?></a></strong>
     </div>
   </div>
 <?php $this->endWidget(); ?>
