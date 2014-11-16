@@ -10,7 +10,7 @@ return array(
 	'name' => 'Microwall - The open source high-performance blog management system',
 	'theme' => 'googleplus',
 	'timeZone' => 'Asia/Hong_Kong',
-	'language' => 'en_us',
+	'language' => 'zh_cn',
 
 	// preloading 'log' component
 	'preload' => array('log'),

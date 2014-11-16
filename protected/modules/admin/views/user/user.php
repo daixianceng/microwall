@@ -14,6 +14,16 @@
 				'enctype' => 'multipart/form-data'
 			)
 		)); ?>
+		<?php if (Yii::app()->user->hasFlash('success')) :?>
+		  <div class="form-group">
+		  	<div class="col-md-10 col-md-offset-2">
+		  	  <div class="alert alert-success">
+		  	  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		  	  <strong>Success!</strong> <?php echo Yii::app()->user->getFlash('success')?>
+		  	  </div>
+		  	</div>
+		  </div>
+		<?php endif;?>
 		  <div class="form-group">
 		    <?php echo $form->label($model, 'role', array('class' => 'col-md-2 control-label', 'label' => Yii::t('AdminModule.user', 'Role')))?>
 		    <div class="col-md-10">
