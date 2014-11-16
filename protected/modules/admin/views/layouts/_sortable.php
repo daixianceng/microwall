@@ -25,5 +25,6 @@ $(function() {
 	})
 })
 SCRIPT;
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/jquery-sortable.js', CClientScript::POS_END);
+$assetUrl = Yii::app()->assetManager->publish(Yii::getPathOfAlias('ext.jquery-plugins'));
+Yii::app()->clientScript->registerScriptFile($assetUrl . '/jquery-sortable.js', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript('drag', $drag, CClientScript::POS_END);
