@@ -23,7 +23,4 @@ return array(
 		'Detects the user({user}) has articles, please select an action in the following:' => '检测到该用户（{user}）下有文章，请选择执行动作：',
 		'Delete the user and move it\'s all articles to {select} user(Recommended).' => '移除该用户并将其名下所有文章转移至{select}用户名下（推荐）。',
 		'Delete the user and it\'s all articles.' => '移除该用户并删除其名下所有文章。',
-		
-		'User information changed successfully!' => '用户信息修改成功！',
-		'Failed to modify user information!' => '用户信息修改失败',
 );

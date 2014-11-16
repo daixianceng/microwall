@@ -14,7 +14,16 @@
 				'enctype' => 'multipart/form-data'
 			)
 		)); ?>
-		<?php $this->renderPartial('/layouts/_flash-form', array('length' => 10))?>
+		<?php if (Yii::app()->user->hasFlash('success')) :?>
+		  <div class="form-group">
+		  	<div class="col-md-10 col-md-offset-2">
+		  	  <div class="alert alert-success">
+		  	  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		  	  <strong>Success!</strong> <?php echo Yii::app()->user->getFlash('success')?>
+		  	  </div>
+		  	</div>
+		  </div>
+		<?php endif;?>
 		  <div class="form-group">
 		    <?php echo $form->label($model, 'role', array('class' => 'col-md-2 control-label', 'label' => Yii::t('AdminModule.user', 'Role')))?>
 		    <div class="col-md-10">
@@ -73,7 +82,7 @@
 		    <?php echo $form->label($model, 'avatar', array('class' => 'col-md-2 control-label', 'label' => Yii::t('AdminModule.user', 'Avatar')))?>
 		    <div class="col-md-10">
 		      <?php if (!$model->isNewRecord && !empty($model->avatar)) :?>
-		      <img class="img-thumbnail content-section" alt="The avatar" src="<?php echo Yii::app()->baseUrl?>/media/avatar/<?php echo $model->avatar?>">
+		      <img class="img-thumbnail content-section" alt="The picture" src="<?php echo Yii::app()->baseUrl?>/media/avatar/<?php echo $model->avatar?>">
 		      <?php endif;?>
 		      <?php echo $form->fileField($model, 'avatar', array('class' => 'filestyle', 'data-iconName' => 'glyphicon-picture', 'data-buttonText' => 'Choose image', 'data-buttonName' => 'btn-primary'))?>
 		      <?php echo $form->error($model, 'avatar', array('class' => 'alert alert-danger'))?>

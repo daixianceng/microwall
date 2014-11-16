@@ -108,12 +108,10 @@ class UserController extends AdminController
 					if (substr($model->avatar, 0, 8) !== 'default/' && is_file($avatarPath . $oldAvatar))
 						unlink($avatarPath . $oldAvatar);
 				}
-				Yii::app()->user->setFlash('success', Yii::t('AdminModule.user', 'User information changed successfully!'));
+				Yii::app()->user->setFlash('success', Yii::t('AdminModule', 'success'));
 				$this->refresh();
-			} else {
+			} else
 				$model->avatar = $oldAvatar;
-				Yii::app()->user->setFlash('error', Yii::t('AdminModule.user', 'Failed to modify user information!'));
-			}
 		}
 
 		$roles = User::getRoles(false);

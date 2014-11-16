@@ -52,20 +52,6 @@ class User extends CActiveRecord
 			$this->addError($attribute, 'The name has already been token.');
 	}
 	
-	public function attributeLabels()
-	{
-		return array(
-				'role' => Yii::t('AdminModule.user', 'Role'),
-				'name' => Yii::t('AdminModule.user', 'Username'),
-				'nickname' => Yii::t('AdminModule.user', 'Nickname'),
-				'password' => Yii::t('AdminModule.user', 'Password'),
-				'passwordRepeat' => Yii::t('AdminModule.user', 'Confirm Password'),
-				'mail' => Yii::t('AdminModule.user', 'E-mail'),
-				'avatar' => Yii::t('AdminModule.user', 'Avatar'),
-				'description' => Yii::t('AdminModule.user', 'Self Description'),
-		);
-	}
-	
 	protected function beforeSave()
 	{
 		if ($this->isNewRecord && empty($this->avatar))
@@ -74,7 +60,8 @@ class User extends CActiveRecord
 		// if no encrypt
 		if (strlen($this->password) !== 40) {
 			if (empty($this->password))
-				unset($this->password);
+				// TODO if password is not changes then don't change it.
+				$this->password = new CDbExpression('password');
 			else
 				$this->password = self::encrypt($this->name, $this->password);
 		}
