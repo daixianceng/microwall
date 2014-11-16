@@ -52,8 +52,10 @@ class UserController extends AdminController
 				}
 				
 				Yii::app()->authManager->assign($model->role, $model->id);
+				Yii::app()->user->setFlash('success', Yii::t('AdminModule.user', 'Adding a user successfully!'));
 				$this->redirect($this->createUrl('index'));
-			}
+			} else
+				Yii::app()->user->setFlash('error', Yii::t('AdminModule.user', 'Add a user fails!'));
 		}
 		
 		$this->render('user', array('model' => $model, 'roles' => $roles));
@@ -149,15 +151,28 @@ class UserController extends AdminController
 				Yii::app()->authManager->revoke($role, $model->id);
 				if (!empty($model->avatar) && substr($model->avatar, 0, 8) !== 'default/' && is_file($avatarPath . $model->avatar))
 					unlink($avatarPath . $model->avatar);
-				$model->delete();
+				if ($model->delete()) {
+					if (Yii::app()->request->isAjaxRequest)
+						echo json_encode(array('error' => '200'));
+					else {
+						Yii::app()->user->setFlash('success', Yii::t('AdminModule.user', 'User deleted successfully!'));
+						$this->redirect(array('index'));
+					}
+				} else {
+					if (Yii::app()->request->isAjaxRequest)
+						echo json_encode(array('error' => '417'));
+					else {
+						Yii::app()->user->setFlash('error', Yii::t('AdminModule.user', 'User delete failed!'));
+						$this->redirect(array('index'));
+					}
+				}
 			}
+		} else {
+			if (Yii::app()->request->isAjaxRequest)
+				echo json_encode(array('error' => '200'));
+			else
+				$this->redirect($this->createUrl('index'));
 		}
-		
-		if (Yii::app()->request->isAjaxRequest) {
-			echo json_encode(array('error' => '200'));
-			Yii::app()->end();
-		} else
-			$this->redirect($this->createUrl('index'));
 	}
 	
 	public function actionRemoveChild($id)
@@ -185,7 +200,10 @@ class UserController extends AdminController
 						Yii::app()->authManager->revoke($role, $model->id);
 						if (!empty($model->avatar) && substr($model->avatar, 0, 8) !== 'default/' && is_file($avatarPath . $model->avatar))
 							unlink($avatarPath . $model->avatar);
-						$model->delete();
+						if ($model->delete())
+							Yii::app()->user->setFlash('success', Yii::t('AdminModule.user', 'User deleted successfully!'));
+						else
+							Yii::app()->user->setFlash('error', Yii::t('AdminModule.user', 'User delete failed!'));
 						$this->redirect($this->createUrl('index'));
 					}
 					if (in_array('401', $userRemoveForm->getErrors('type')))

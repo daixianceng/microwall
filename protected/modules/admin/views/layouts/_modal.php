@@ -46,6 +46,8 @@ $(function() {
 					$('.modal').modal('hide');
 				} else if (json.error === '401') {
 					alert('Permission denied');
+				} else if (json.error === '417') {
+					alert('The operation failed');
 				} else if (json.error === 'redirect') {
 					location.href = json.url;
 				}

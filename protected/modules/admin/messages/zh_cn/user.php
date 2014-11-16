@@ -26,4 +26,8 @@ return array(
 		
 		'User information changed successfully!' => '用户信息修改成功！',
 		'Failed to modify user information!' => '用户信息修改失败',
+		'Adding a user successfully!' => '添加用户成功！',
+		'Add a user fails!' => '添加用户失败！',
+		'User deleted successfully!' => '用户删除成功！',
+		'User delete failed!' => '用户删除失败！'
 );

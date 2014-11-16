@@ -28,6 +28,7 @@
         <?php $this->renderPartial('/layouts/_list2');?>
         <div id="content">
         	<h2 class="content-header"><?php echo $this->pageTitle?><small><?php echo $this->subTitle?></small></h2>
+        	<?php $this->renderPartial('/layouts/_flash')?>
             <?php echo $content;?>
         </div>
     </div>
