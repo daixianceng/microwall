@@ -8,3 +8,6 @@ media/temp/*
 !media/temp/.gitignore
 media/pic/*
 !media/pic/.gitignore
+.buildpath
+.project
+.settings/*
