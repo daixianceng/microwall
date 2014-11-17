@@ -34,4 +34,12 @@ return array(
 		'Detects the category({category}) has articles, please select an action in the following:' => '检测到该分类（{category}）下有文章，请选择执行动作：',
 		'Delete the category and move it\'s all articles to {select} category(Recommended).' => '删除该分类并将其下所有文章转移至{select}分类（推荐）。',
 		'Delete the category and it\'s all articles.' => '删除该分类并删除其下所有文章。',
+		
+		'Published article successfully!' => '文章发布成功！',
+		'The article successfully deposited in the draft!' => '文章存入草稿成功！',
+		'Post failure!' => '插入文章失败！',
+		'The article updated successfully!' => '文章更新成功！',
+		'The article update failed!' => '文章更新失败！',
+		'The article successfully moved to the trash!' => '文章成功转移至回收站！',
+		'The article move to the trash failed!' => '文章转移至回收站失败！',
 );

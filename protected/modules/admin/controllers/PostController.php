@@ -156,14 +156,18 @@ class PostController extends AdminController
 					rename($tempPath . $model->pic, $picPath . $model->pic);
 					rename($tempPath . 'min_' . $model->pic, $picPath . 'min_' . $model->pic);
 				}
-					
-				if ($model->status === Post::STATUS_PUBLISHED)
+
+				if ($model->status === Post::STATUS_PUBLISHED) {
+					Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'Published article successfully!'));
 					$redirectUrl = $this->createUrl('index');
-				else
+				} else {
+					Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article successfully deposited in the draft!'));
 					$redirectUrl = $this->createUrl('archived');
+				}
 					
 				$this->redirect($redirectUrl);
-			}
+			} else
+				Yii::app()->user->setFlash('error', Yii::t('AdminModule.post', 'Post failure!'));
 		}
 		
 		$this->render('writing', array('model' => $model, 'categories' => Category::getList()));
@@ -221,22 +225,20 @@ class PostController extends AdminController
 					if (is_file($picPath . 'min_' . $oldPicName))
 						unlink($picPath . 'min_' . $oldPicName);
 				}
-					
-				if ($model->status === Post::STATUS_PUBLISHED)
-					$redirectUrl = $this->createUrl('index');
-				else
-					$redirectUrl = $this->createUrl('archived');
-			
-				$this->redirect($redirectUrl);
-			} else
+				
+				Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article updated successfully!'));
+				$this->refresh();
+			} else {
 				$model->pic = $oldPicName;
+				Yii::app()->user->setFlash('error', Yii::t('AdminModule.post', 'The article update failed!'));
+			}
 		}
 		
 		$this->render('writing', array('model' => $model, 'categories' => Category::getList()));
 	}
 	
 	/**
-	 * 
+	 * 移至回收站
 	 * 
 	 * @param integer $id
 	 */
@@ -254,14 +256,17 @@ class PostController extends AdminController
 			
 			$model->status = Post::STATUS_RECYCLED;
 			$model->date_trash = new CDbExpression('NOW()');
-			$model->save(false);
+			if ($model->save(false))
+				Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article successfully moved to the trash!'));
+			else
+				Yii::app()->user->setFlash('error', Yii::t('AdminModule.post', 'The article move to the trash failed!'));
 		}
 		
 		$this->redirect($this->createUrl('recycled'));
 	}
 	
 	/**
-	 * 
+	 * 永久删除
 	 * 
 	 * @param integer $id
 	 */

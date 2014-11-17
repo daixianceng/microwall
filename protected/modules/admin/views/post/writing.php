@@ -24,6 +24,7 @@
 		    </div>
 		  </div>
 		  <?php endif;?>
+		  <?php $this->renderPartial('/layouts/_flash-form', array('length' => 10))?>
 		  <div class="form-group">
 		    <?php echo $form->label($model, 'title', array('class' => 'col-md-2 control-label', 'label' => Yii::t('AdminModule.post', 'Title')))?>
 		    <div class="col-md-10">
