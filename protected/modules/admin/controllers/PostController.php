@@ -158,7 +158,7 @@ class PostController extends AdminController
 				}
 
 				if ($model->status === Post::STATUS_PUBLISHED) {
-					Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'Published article successfully!'));
+					Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article published successfully!'));
 					$redirectUrl = $this->createUrl('index');
 				} else {
 					Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article successfully deposited in the draft!'));
@@ -181,7 +181,7 @@ class PostController extends AdminController
 	 */
 	public function actionEdit($id)
 	{
-		$this->_menu = 'writing';
+		$this->_menu = 'post';
 		$this->pageTitle = Yii::t('AdminModule.post', 'Edit Article');
 		
 		// default scenario to update
@@ -291,14 +291,23 @@ class PostController extends AdminController
 				unlink(Yii::getPathOfAlias('webroot.media.pic') . DIRECTORY_SEPARATOR . $model->pic);
 				unlink(Yii::getPathOfAlias('webroot.media.pic') . DIRECTORY_SEPARATOR . 'min_' . $model->pic);
 			}
-			$model->delete();
+			if (!$model->delete()) {
+				if (Yii::app()->request->isAjaxRequest) {
+					echo json_encode(array('error' => '417'));
+					Yii::app()->end();
+				} else {
+					Yii::app()->user->setFlash('error', Yii::t('AdminModule.user', 'The article delete failed!'));
+					$this->redirect(array('recycled'));
+				}
+			}
 		}
 		
 		if (Yii::app()->request->isAjaxRequest) {
 			echo json_encode(array('error' => '200'));
-			Yii::app()->end();
-		} else
-			$this->redirect($this->createUrl('index'));
+		} else {
+			Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article deleted successfully!'));
+			$this->redirect(array('recycled'));
+		}
 	}
 	
 	public function actionCategories()
@@ -323,8 +332,10 @@ class PostController extends AdminController
 		if (isset($_POST['Category'])) {
 			$model->attributes = $_POST['Category'];
 			if ($model->save()) {
+				Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article category added successfully!'));
 				$this->redirect($this->createUrl('categories'));
-			}
+			} else
+				Yii::app()->user->setFlash('error', Yii::t('AdminModule.post', 'Add article category failed!'));
 		}
 		
 		$this->render('category', array('model' => $model));
@@ -347,8 +358,10 @@ class PostController extends AdminController
 			$model->setScenario('update');
 			$model->attributes = $_POST['Category'];
 			if ($model->save()) {
+				Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article category changed successfully!'));
 				$this->redirect($this->createUrl('categories'));
-			}
+			} else
+				Yii::app()->user->setFlash('error', Yii::t('AdminModule.post', 'Failed to modify article category!'));
 		}
 		
 		$this->render('category', array('model' => $model));
@@ -376,15 +389,25 @@ class PostController extends AdminController
 					Yii::app()->end();
 				} else
 					$this->redirect($this->createUrl('categoryRemoveChild', array('id' => $id)));
-			} else
-				$model->delete();
+			} else {
+				if (!$model->delete()) {
+					if (Yii::app()->request->isAjaxRequest) {
+						echo json_encode(array('error' => '417'));
+						Yii::app()->end();
+					} else {
+						Yii::app()->user->setFlash('error', Yii::t('AdminModule.post', 'Failed to delete article category!'));
+						$this->redirect(array('categories'));
+					}
+				}
+			}
 		}
 		
 		if (Yii::app()->request->isAjaxRequest) {
 			echo json_encode(array('error' => '200'));
-			Yii::app()->end();
-		} else
-			$this->redirect($this->createUrl('categories'));
+		} else {
+			Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article category deleted successfully!'));
+			$this->redirect(array('categories'));
+		}
 	}
 	
 	public function actionCategoryRemoveChild($id)
@@ -407,8 +430,12 @@ class PostController extends AdminController
 					
 					$categoryRemoveForm->attributes = $_POST['CategoryRemoveForm'];
 					if ($categoryRemoveForm->validate()) {
-						$model->delete();
-						$this->redirect($this->createUrl('categories'));
+						if ($model->delete())
+							Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article category deleted successfully!'));
+						else
+							Yii::app()->user->setFlash('error', Yii::t('AdminModule.post', 'Failed to delete article category!'));
+						
+						$this->redirect(array('categories'));
 					}
 					if (in_array('401', $categoryRemoveForm->getErrors('type')))
 						$this->_permissionDenied();
@@ -422,7 +449,7 @@ class PostController extends AdminController
 			}
 		}
 		
-		$this->redirect($this->createUrl('categories'));
+		$this->redirect(array('categories'));
 	}
 	
 	public function actionCategorySort($list)

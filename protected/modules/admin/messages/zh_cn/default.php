@@ -31,4 +31,6 @@ return array(
 		'4 hours' => '4 小时',
 		'1 day' => '1 天',
 		'7 days' => '7 天',
+		
+		'Site settings have been updated!' => '网站设置已更新！'
 );

@@ -75,7 +75,7 @@
 		  <div class="form-group">
 		    <div class="col-md-offset-2 col-md-10">
 		      <?php echo $form->hiddenField($model, 'status', array('value' => Post::STATUS_PUBLISHED))?>
-		      <button type="submit" class="btn btn-primary" id="button_publish"><span class="glyphicon glyphicon-open glyphicon-rm10"></span><?php echo Yii::t('AdminModule.post', 'Publish')?></button>
+		      <button type="submit" class="btn btn-primary" id="button_publish"><span class="glyphicon glyphicon-open glyphicon-rm10"></span><?php echo $model->isNewRecord ? Yii::t('AdminModule.post', 'Publish') : Yii::t('AdminModule.post', 'Save and Publish')?></button>
 		      <button type="submit" class="btn btn-default" id="button_archive"><span class="glyphicon glyphicon-save glyphicon-rm10"></span><?php echo Yii::t('AdminModule.post', 'Save Draft')?></button>
 		    </div>
 		  </div>

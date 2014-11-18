@@ -54,8 +54,10 @@ class DefaultController extends AdminController
 		if (isset($_POST['ConfigForm'])) {
 			$model->attributes = $_POST['ConfigForm'];
 			
-			if ($model->validate())
-				$this->redirect($this->createUrl(''));
+			if ($model->validate()) {
+				Yii::app()->user->setFlash('success', Yii::t('AdminModule.default', 'Site settings have been updated!'));
+				$this->refresh();
+			}
 		}
 		
 		$dirTemp = new Microwall_Dir(Yii::getPathOfAlias('webroot.media.temp'));

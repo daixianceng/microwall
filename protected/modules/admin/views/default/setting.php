@@ -13,6 +13,7 @@
 					'class' => 'form-horizontal',
 				)
 			)); ?>
+		  <?php $this->renderPartial('/layouts/_flash-form', array('length' => 10))?>
 		  <div class="form-group">
 		  	<label class="col-md-2 control-label"><?php echo Yii::t('AdminModule.default', 'Title')?></label>
 		  	<div class="col-md-10">
