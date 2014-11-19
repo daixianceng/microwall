@@ -96,8 +96,10 @@ class PageController extends AdminController
 				else
 					$redirectUrl = $this->createUrl('archived');
 					
+				Yii::app()->user->setFlash('success', Yii::t('AdminModule.page', 'The page published successfully!'));
 				$this->redirect($redirectUrl);
-			}
+			} else
+				Yii::app()->user->setFlash('error', Yii::t('AdminModule.page', 'Post failure!'));
 		}
 		
 		$this->render('page-' . $type, array('model' => $model));
@@ -139,8 +141,10 @@ class PageController extends AdminController
 				else
 					$redirectUrl = $this->createUrl('archived');
 				
-				$this->redirect($redirectUrl);
-			}
+				Yii::app()->user->setFlash('success', Yii::t('AdminModule.page', 'The page updated successfully!'));
+				$this->refresh();
+			} else
+				Yii::app()->user->setFlash('error', Yii::t('AdminModule.page', 'The page update failed!'));
 		}
 		
 		$this->layout = '/layouts/page';
@@ -160,12 +164,21 @@ class PageController extends AdminController
 		
 		if ($model) {
 			$model->status = Page::STATUS_RECYCLED;
-			$model->save(false);
+			if (!$model->save(false)) {
+				Yii::app()->user->setFlash('error', Yii::t('AdminModule.page', 'The page move to the trash failed!'));
+				$this->redirect(array('recycled'));
+			}
 		}
 		
-		$this->redirect($this->createUrl('recycled'));
+		Yii::app()->user->setFlash('success', Yii::t('AdminModule.page', 'The page successfully moved to the trash!'));
+		$this->redirect(array('recycled'));
 	}
 	
+	/**
+	 * 永久删除
+	 * 
+	 * @param integer $id
+	 */
 	public function actionRemove($id)
 	{
 		if (!Yii::app()->user->checkAccess('removePage')) {
@@ -181,14 +194,24 @@ class PageController extends AdminController
 		
 		$model = Page::model()->findByPk($id);
 		
-		if ($model)
-			$model->delete();
+		if ($model) {
+			if (!$model->delete()) {
+				if (Yii::app()->request->isAjaxRequest) {
+					echo json_encode(array('error' => '417'));
+					Yii::app()->end();
+				} else {
+					Yii::app()->user->setFlash('error', Yii::t('AdminModule.page', 'The page delete failed!'));
+					$this->redirect(array('recycled'));
+				}
+			}
+		}
 		
-		if (Yii::app()->request->isAjaxRequest) {
+		if (Yii::app()->request->isAjaxRequest)
 			echo json_encode(array('error' => '200'));
-			Yii::app()->end();
-		} else
-			$this->redirect($this->createUrl('index'));
+		else {
+			Yii::app()->user->setFlash('success', Yii::t('AdminModule.page', 'The page deleted successfully!'));
+			$this->redirect(array('recycled'));
+		}
 	}
 	
 	public function actionSort($list)

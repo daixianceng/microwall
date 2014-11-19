@@ -12,6 +12,7 @@
 				'class' => 'form-horizontal'
 		)
 	));?>
+	<?php $this->renderPartial('/layouts/_flash-form', array('length' => 10))?>
 	  <div class="form-group">
 	    <?php echo $form->label($model, 'title', array('class' => 'col-md-2 control-label', 'label' => Yii::t('AdminModule.page', 'Title')))?>
 	    <div class="col-md-10">
@@ -37,7 +38,7 @@
 	  <div class="form-group">
 	    <div class="col-md-offset-2 col-md-10">
 	      <?php echo $form->hiddenField($model, 'status', array('value' => Page::STATUS_PUBLISHED))?>
-	      <button type="submit" class="btn btn-primary" id="button_publish"><span class="glyphicon glyphicon-open glyphicon-rm10"></span><?php echo Yii::t('AdminModule.page', 'Publish')?></button>
+	      <button type="submit" class="btn btn-primary" id="button_publish"><span class="glyphicon glyphicon-open glyphicon-rm10"></span><?php echo $model->isNewRecord ? Yii::t('AdminModule.page', 'Publish') : Yii::t('AdminModule.page', 'Save and Publish')?></button>
 	      <button type="submit" class="btn btn-default" id="button_archive"><span class="glyphicon glyphicon-save glyphicon-rm10"></span><?php echo Yii::t('AdminModule.page', 'Save Draft')?></button>
 	    </div>
 	  </div>

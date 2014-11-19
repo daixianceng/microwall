@@ -256,13 +256,14 @@ class PostController extends AdminController
 			
 			$model->status = Post::STATUS_RECYCLED;
 			$model->date_trash = new CDbExpression('NOW()');
-			if ($model->save(false))
-				Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article successfully moved to the trash!'));
-			else
+			if (!$model->save(false)) {
 				Yii::app()->user->setFlash('error', Yii::t('AdminModule.post', 'The article move to the trash failed!'));
+				$this->redirect(array('recycled'));
+			}
 		}
 		
-		$this->redirect($this->createUrl('recycled'));
+		Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article successfully moved to the trash!'));
+		$this->redirect(array('recycled'));
 	}
 	
 	/**
@@ -302,9 +303,9 @@ class PostController extends AdminController
 			}
 		}
 		
-		if (Yii::app()->request->isAjaxRequest) {
+		if (Yii::app()->request->isAjaxRequest)
 			echo json_encode(array('error' => '200'));
-		} else {
+		else {
 			Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article deleted successfully!'));
 			$this->redirect(array('recycled'));
 		}
@@ -333,7 +334,7 @@ class PostController extends AdminController
 			$model->attributes = $_POST['Category'];
 			if ($model->save()) {
 				Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article category added successfully!'));
-				$this->redirect($this->createUrl('categories'));
+				$this->redirect(array('categories'));
 			} else
 				Yii::app()->user->setFlash('error', Yii::t('AdminModule.post', 'Add article category failed!'));
 		}

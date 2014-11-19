@@ -17,6 +17,16 @@ return array(
 		'URL Index' => 'URL索引名',
 		'Content' => '内容',
 		'Publish' => '发布',
+		'Save and Publish' => '保存并发布',
 		'Save Draft' => '存入草稿',
-		'Displayed in the URL, such as:"http://www.example.com/page/<mark>page-name</mark>".' => '在URL中的显示方式，如：“http://www.example.com/page/<mark>page-name</mark>”。'
+		'Displayed in the URL, such as:"http://www.example.com/page/<mark>page-name</mark>".' => '在URL中的显示方式，如：“http://www.example.com/page/<mark>page-name</mark>”。',
+		
+		'The page published successfully!' => '页面发布成功！',
+		'Post failure!' => '页面插入失败',
+		'The page updated successfully!' => '页面更新成功！',
+		'The page update failed!' => '页面更新失败！',
+		'The page move to the trash failed!' => '页面转移至回收站失败！',
+		'The page successfully moved to the trash!' => '页面成功转移至回收站！',
+		'The page delete failed!' => '页面删除失败！',
+		'The page deleted successfully!' => '页面删除成功！',
 );
