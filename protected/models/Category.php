@@ -14,7 +14,7 @@ class Category extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'post' => array(self::HAS_MANY, 'Post', 'id')
+			'post' => array(self::HAS_MANY, 'Post', 'category')
 		);
 	}
 	

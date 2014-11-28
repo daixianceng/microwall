@@ -18,7 +18,7 @@ class Post extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'comments' => array(self::HAS_MANY, 'Comment', 'id'),
+			'comments' => array(self::HAS_MANY, 'Comment', 'post_id'),
 			'author' => array(self::BELONGS_TO, 'User', 'author'),
 			'category' => array(self::BELONGS_TO, 'Category', 'category'),
 		);
