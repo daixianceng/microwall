@@ -110,12 +110,12 @@ class Post extends CActiveRecord
 		if ($image->resize(750, 400)) {
 			$picName = $image->save($tempPath);
 		} else {
-			$model->addError('pic', 'Can not resize the image.');
+			throw new Exception('Can not resize the image.');
 		}
 		if ($image->resize(220, 117)) {
 			$image->save($tempPath, 'min_' . $picName);
 		} else {
-			$model->addError('pic', 'Can not resize the image.');
+			throw new Exception('Can not resize the image.');
 		}
 		
 		return $picName;

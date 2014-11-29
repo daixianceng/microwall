@@ -130,44 +130,50 @@ class PostController extends AdminController
 		if (isset($_POST['Post'])) {
 			unset($_POST['Post']['pic']);
 			
-			if (isset($_POST['Post']['status']) && $_POST['Post']['status'] === Post::STATUS_ARCHIVED)
-				// archive
-				$model->setScenario('archive');
-			
-			$model->attributes = $_POST['Post'];
-			$pic = CUploadedFile::getInstance($model, 'pic');
-			
-			$hasPic = false;
-			// if uploaded image
-			if ($pic) {
-				$model->pic = $pic->name;
-				// auth the image type
-				if ($model->validate()) {
-					$model->pic = Post::processPic($pic, $model);
-					$hasPic = true;
-				}
+			try {
+				if (isset($_POST['Post']['status']) && $_POST['Post']['status'] === Post::STATUS_ARCHIVED)
+					// archive
+					$model->setScenario('archive');
+				
+				$model->attributes = $_POST['Post'];
+				$pic = CUploadedFile::getInstance($model, 'pic');
+				
+				$hasPic = false;
+				$hasPicError = false;
+				// if uploaded image
+				if ($pic) {
+					$model->pic = $pic->name;
+					// auth the image type
+					if ($model->validate()) {
+						$model->pic = Post::processPic($pic, $model);
+						$hasPic = true;
+					}
+				} else
+					throw new Exception('The pic not found.');
+				
+				if ($model->save()) {
+					if ($hasPic) {
+						$tempPath = Yii::getPathOfAlias('webroot.media.temp') . DIRECTORY_SEPARATOR;
+						$picPath = Yii::getPathOfAlias('webroot.media.pic') . DIRECTORY_SEPARATOR;
+				
+						rename($tempPath . $model->pic, $picPath . $model->pic);
+						rename($tempPath . 'min_' . $model->pic, $picPath . 'min_' . $model->pic);
+					}
+	
+					if ($model->status === Post::STATUS_PUBLISHED) {
+						Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article published successfully!'));
+						$redirectUrl = $this->createUrl('index');
+					} else {
+						Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article successfully deposited in the draft!'));
+						$redirectUrl = $this->createUrl('archived');
+					}
+						
+					$this->redirect($redirectUrl);
+				} else
+					Yii::app()->user->setFlash('error', Yii::t('AdminModule.post', 'Post failure!'));
+			} catch (Exception $e) {
+				Yii::app()->user->setFlash('error', $e->getMessage());
 			}
-			
-			if ($model->save()) {
-				if ($hasPic) {
-					$tempPath = Yii::getPathOfAlias('webroot.media.temp') . DIRECTORY_SEPARATOR;
-					$picPath = Yii::getPathOfAlias('webroot.media.pic') . DIRECTORY_SEPARATOR;
-			
-					rename($tempPath . $model->pic, $picPath . $model->pic);
-					rename($tempPath . 'min_' . $model->pic, $picPath . 'min_' . $model->pic);
-				}
-
-				if ($model->status === Post::STATUS_PUBLISHED) {
-					Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article published successfully!'));
-					$redirectUrl = $this->createUrl('index');
-				} else {
-					Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article successfully deposited in the draft!'));
-					$redirectUrl = $this->createUrl('archived');
-				}
-					
-				$this->redirect($redirectUrl);
-			} else
-				Yii::app()->user->setFlash('error', Yii::t('AdminModule.post', 'Post failure!'));
 		}
 		
 		$this->render('writing', array('model' => $model, 'categories' => Category::getList()));
@@ -196,41 +202,45 @@ class PostController extends AdminController
 		if (isset($_POST['Post'])) {
 			unset($_POST['Post']['pic']);
 			
-			if (isset($_POST['Post']['status']) && $_POST['Post']['status'] === Post::STATUS_ARCHIVED)
-				// archive
-				$model->setScenario('archive');
-			
-			$model->attributes = $_POST['Post'];
-			$pic = CUploadedFile::getInstance($model, 'pic');
-			
-			$hasPic = false;
-			if ($pic) {
-				$model->pic = $pic->name;
-				if ($model->validate()) {
-					$model->pic = Post::processPic($pic, $model);
-					$hasPic = true;
-				}
-			}
+			try {
+				if (isset($_POST['Post']['status']) && $_POST['Post']['status'] === Post::STATUS_ARCHIVED)
+					// archive
+					$model->setScenario('archive');
 				
-			if ($model->save()) {
-				if ($hasPic) {
-					$tempPath = Yii::getPathOfAlias('webroot.media.temp') . DIRECTORY_SEPARATOR;
-					$picPath = Yii::getPathOfAlias('webroot.media.pic') . DIRECTORY_SEPARATOR;
-			
-					rename($tempPath . $model->pic, $picPath . $model->pic);
-					rename($tempPath . 'min_' . $model->pic, $picPath . 'min_' . $model->pic);
-			
-					if (is_file($picPath . $oldPicName))
-						unlink($picPath . $oldPicName);
-					if (is_file($picPath . 'min_' . $oldPicName))
-						unlink($picPath . 'min_' . $oldPicName);
-				}
+				$model->attributes = $_POST['Post'];
+				$pic = CUploadedFile::getInstance($model, 'pic');
 				
-				Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article updated successfully!'));
-				$this->refresh();
-			} else {
-				$model->pic = $oldPicName;
-				Yii::app()->user->setFlash('error', Yii::t('AdminModule.post', 'The article update failed!'));
+				$hasPic = false;
+				if ($pic) {
+					$model->pic = $pic->name;
+					if ($model->validate()) {
+						$model->pic = Post::processPic($pic, $model);
+						$hasPic = true;
+					}
+				}
+					
+				if ($model->save()) {
+					if ($hasPic) {
+						$tempPath = Yii::getPathOfAlias('webroot.media.temp') . DIRECTORY_SEPARATOR;
+						$picPath = Yii::getPathOfAlias('webroot.media.pic') . DIRECTORY_SEPARATOR;
+				
+						rename($tempPath . $model->pic, $picPath . $model->pic);
+						rename($tempPath . 'min_' . $model->pic, $picPath . 'min_' . $model->pic);
+				
+						if (is_file($picPath . $oldPicName))
+							unlink($picPath . $oldPicName);
+						if (is_file($picPath . 'min_' . $oldPicName))
+							unlink($picPath . 'min_' . $oldPicName);
+					}
+					
+					Yii::app()->user->setFlash('success', Yii::t('AdminModule.post', 'The article updated successfully!'));
+					$this->refresh();
+				} else {
+					$model->pic = $oldPicName;
+					Yii::app()->user->setFlash('error', Yii::t('AdminModule.post', 'The article update failed!'));
+				}
+			} catch (Exception $e) {
+				Yii::app()->user->setFlash('error', $e->getMessage());
 			}
 		}
 		
