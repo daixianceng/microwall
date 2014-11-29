@@ -35,6 +35,15 @@ class Page extends CActiveRecord
 		);
 	}
 	
+	public function attributeLabels()
+	{
+		return array(
+				'title' => Yii::t('AdminModule.page', 'Title'),
+				'slug' => Yii::t('AdminModule.page', 'URL Index'),
+				'content' => Yii::t('AdminModule.page', 'Content'),
+		);
+	}
+	
 	protected function beforeSave()
 	{
 		if ($this->type === self::TYPE_LINK || empty($this->slug))

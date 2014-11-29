@@ -59,6 +59,18 @@ class Post extends CActiveRecord
 		);
 	}
 	
+	public function attributeLabels()
+	{
+		return array(
+			'title' => Yii::t('AdminModule.post', 'Title'),
+			'slug' => Yii::t('AdminModule.post', 'URL Index'),
+			'category' => Yii::t('AdminModule.post', 'Category'),
+			'pic' => Yii::t('AdminModule.post', 'Picture'),
+			'description' => Yii::t('AdminModule.post', 'Description'),
+			'content' => Yii::t('AdminModule.post', 'Content'),
+		);
+	}
+	
 	public function authenticateCategory($attribute, $params)
 	{
 		if (!Category::model()->exists('id=:category', array(':category' => $this->category)))

@@ -29,6 +29,15 @@ class Category extends CActiveRecord
 		);
 	}
 	
+	public function attributeLabels()
+	{
+		return array(
+				'name' => Yii::t('AdminModule.post', 'Name'),
+				'slug' => Yii::t('AdminModule.post', 'URL Index'),
+				'comment' => Yii::t('AdminModule.post', 'Comment')
+		);
+	}
+	
 	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
