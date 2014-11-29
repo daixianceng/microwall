@@ -2,9 +2,10 @@
 	<?php $form = $this->beginWidget('CActiveForm', array(
 		'id'=>'Page',
 		'enableClientValidation'=>false,
+		'enableAjaxValidation' => true,
 		'clientOptions' => array(
-				'validateOnSubmit' => false,
-				'validateOnChange' => false,
+				'validateOnSubmit' => true,
+				'validateOnChange' => true,
 				'errorCssClass' => 'has-error',
 				'successCssClass' => 'has-success'
 		),

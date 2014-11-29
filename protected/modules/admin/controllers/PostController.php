@@ -127,6 +127,11 @@ class PostController extends AdminController
 		// default insert
 		$model = new Post();
 		
+		if (isset($_POST['ajax']) && $_POST['ajax'] === 'Post') {
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
+		}
+		
 		if (isset($_POST['Post'])) {
 			unset($_POST['Post']['pic']);
 			
@@ -197,6 +202,11 @@ class PostController extends AdminController
 			throw new CHttpException(404, 'The post id can not be find.');
 		if (!Yii::app()->user->checkAccess('editPost', array('userId' => $model->author)))
 			$this->_permissionDenied();
+		
+		if (isset($_POST['ajax']) && $_POST['ajax'] === 'Post') {
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
+		}
 		
 		$oldPicName = $model->pic;
 		if (isset($_POST['Post'])) {

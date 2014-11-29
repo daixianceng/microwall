@@ -75,6 +75,11 @@ class PageController extends AdminController
 			// link
 			$model = new Page($type);
 		
+		if (isset($_POST['ajax']) && $_POST['ajax'] === 'Page') {
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
+		}
+		
 		if (isset($_POST['Page'])) {
 			
 			if ($type === Page::TYPE_LOCAL) {
