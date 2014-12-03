@@ -15,6 +15,9 @@ class Microwall_Dir
 			throw new Exception('dir not a real dir');
 	}
 	
+	/*
+	 * 该方法因权限与安装等问题暂被替换
+	 * 
 	public function getSize()
 	{
 		if ($this->_size !== null)
@@ -42,6 +45,16 @@ class Microwall_Dir
 			}
 			return $this->_size;
 		}
+	}
+	*/
+	
+	public function getSize()
+	{
+		$size = 0;
+		foreach(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->_name)) as $file){
+			$size += $file->getSize();
+		}
+		return $size;
 	}
 	
 	public function getFormatSize()
