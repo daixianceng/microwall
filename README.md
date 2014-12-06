@@ -24,7 +24,5 @@ The open source high-performance blog management system
     
 问题：
 =========
-    1. 如果在Windows系统下搭建，请确保已启用COM与.Net组件
-       http://php.net/manual/en/book.com.php
-    2. 在进行分类或页面排序时，可能会出现操作失灵问题，目前并未解决，原因并未发现任何错误
-    3. 请确保安装有gd2
+    1. 在进行分类或页面排序时，可能会出现操作失灵问题，目前并未解决，原因并未发现任何错误
+    2. 请确保安装有gd2
