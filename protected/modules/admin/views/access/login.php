@@ -4,7 +4,7 @@ body {
 }
 </style>
 <div id="login-container">
-<div class="logo"><img alt="Microwall" src="<?php echo Yii::app()->theme->baseUrl . '/images/microwall-large.png'?>"></div>
+<div class="logo"><img alt="Microwall" src="<?php echo $this->module->getAssetsUrl() . '/images/microwall.png'?>"></div>
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'LoginForm',
     'enableClientValidation'=>true,
