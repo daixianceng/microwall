@@ -19,7 +19,6 @@ class UserController extends AdminController
 			$this->_permissionDenied();
 		
 		$model = new User();
-		$roles = User::getRoles();
 		
 		if (isset($_POST['User'])) {
 			unset($_POST['User']['avatar']);
@@ -28,37 +27,38 @@ class UserController extends AdminController
 			if (!Yii::app()->user->checkAccess('createUser', array('role' => $model->role)))
 				$this->_permissionDenied();
 			
-			$avatar = CUploadedFile::getInstance($model, 'avatar');
-			
-			$hasAvatar = false;
-			if ($avatar) {
-				$model->avatar = $avatar->name;
+			try {
+				$avatar = CUploadedFile::getInstance($model, 'avatar');
 				
-				if ($model->validate()) {
-					$model->avatar = User::processAvatar($avatar, $model);
-					$hasAvatar = true;
-				}
-			}
-			
-			if (!isset($roles[$model->role]))
-				$model->addError('role', 'Role was wrong!');
-			
-			if ($model->save()) {
-				if ($hasAvatar) {
-					$tempPath = Yii::getPathOfAlias('webroot.media.temp') . DIRECTORY_SEPARATOR;
-					$avatarPath = Yii::getPathOfAlias('webroot.media.avatar') . DIRECTORY_SEPARATOR;
+				$hasAvatar = false;
+				if ($avatar) {
+					$model->avatar = $avatar->name;
 					
-					rename($tempPath . $model->avatar, $avatarPath . $model->avatar);
+					if ($model->validate()) {
+						$model->avatar = User::processAvatar($avatar, $model);
+						$hasAvatar = true;
+					}
 				}
 				
-				Yii::app()->authManager->assign($model->role, $model->id);
-				Yii::app()->user->setFlash('success', Yii::t('AdminModule.user', 'Adding a user successfully!'));
-				$this->redirect($this->createUrl('index'));
-			} else
-				Yii::app()->user->setFlash('error', Yii::t('AdminModule.user', 'Add user failed!'));
+				if ($model->save()) {
+					if ($hasAvatar) {
+						$tempPath = Yii::getPathOfAlias('webroot.media.temp') . DIRECTORY_SEPARATOR;
+						$avatarPath = Yii::getPathOfAlias('webroot.media.avatar') . DIRECTORY_SEPARATOR;
+						
+						rename($tempPath . $model->avatar, $avatarPath . $model->avatar);
+					}
+					
+					Yii::app()->authManager->assign($model->role, $model->id);
+					Yii::app()->user->setFlash('success', Yii::t('AdminModule.user', 'Adding a user successfully!'));
+					$this->redirect($this->createUrl('index'));
+				} else
+					throw new Exception(Yii::t('AdminModule.user', 'Add user failed!'));
+			} catch (Exception $e) {
+				Yii::app()->user->setFlash('error', $e->getMessage());
+			}
 		}
 		
-		$this->render('user', array('model' => $model, 'roles' => $roles));
+		$this->render('user', array('model' => $model, 'roles' => User::getRoles()));
 	}
 	
 	public function actionEdit($id)
@@ -89,37 +89,41 @@ class UserController extends AdminController
 			unset($_POST['User']['role']);
 			
 			$model->attributes = $_POST['User'];
-			$avatar = CUploadedFile::getInstance($model, 'avatar');
 			
-			$hasAvatar = false;
-			if ($avatar) {
-				$model->avatar = $avatar->name;
+			try {
+				$avatar = CUploadedFile::getInstance($model, 'avatar');
 				
-				if ($model->validate()) {
-					$model->avatar = User::processAvatar($avatar, $model);
-					$hasAvatar = true;
-				}
-			}
-			
-			if ($model->save()) {
-				if ($hasAvatar) {
-					$tempPath = Yii::getPathOfAlias('webroot.media.temp') . DIRECTORY_SEPARATOR;
-					$avatarPath = Yii::getPathOfAlias('webroot.media.avatar') . DIRECTORY_SEPARATOR;
+				$hasAvatar = false;
+				if ($avatar) {
+					$model->avatar = $avatar->name;
 					
-					rename($tempPath . $model->avatar, $avatarPath . $model->avatar);
-					if (substr($model->avatar, 0, 8) !== 'default/' && is_file($avatarPath . $oldAvatar))
-						unlink($avatarPath . $oldAvatar);
+					if ($model->validate()) {
+						$model->avatar = User::processAvatar($avatar, $model);
+						$hasAvatar = true;
+					}
 				}
-				Yii::app()->user->setFlash('success', Yii::t('AdminModule.user', 'User information changed successfully!'));
-				$this->refresh();
-			} else {
-				$model->avatar = $oldAvatar;
-				Yii::app()->user->setFlash('error', Yii::t('AdminModule.user', 'Failed to modify user information!'));
+				
+				if ($model->save()) {
+					if ($hasAvatar) {
+						$tempPath = Yii::getPathOfAlias('webroot.media.temp') . DIRECTORY_SEPARATOR;
+						$avatarPath = Yii::getPathOfAlias('webroot.media.avatar') . DIRECTORY_SEPARATOR;
+						
+						rename($tempPath . $model->avatar, $avatarPath . $model->avatar);
+						if (substr($model->avatar, 0, 8) !== 'default/' && is_file($avatarPath . $oldAvatar))
+							unlink($avatarPath . $oldAvatar);
+					}
+					Yii::app()->user->setFlash('success', Yii::t('AdminModule.user', 'User information changed successfully!'));
+					$this->refresh();
+				} else {
+					$model->avatar = $oldAvatar;
+					throw new Exception(Yii::t('AdminModule.user', 'Failed to modify user information!'));
+				}
+			} catch (Exception $e) {
+				Yii::app()->user->setFlash('error', $e->getMessage());
 			}
 		}
 
-		$roles = User::getRoles(false);
-		$this->render('user', array('model' => $model, 'roles' => $roles));
+		$this->render('user', array('model' => $model, 'roles' => User::getRoles(false)));
 	}
 	
 	public function actionRemove($id)

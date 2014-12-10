@@ -170,7 +170,7 @@ class PostController extends AdminController
 						
 					$this->redirect($redirectUrl);
 				} else
-					Yii::app()->user->setFlash('error', Yii::t('AdminModule.post', 'Post failure!'));
+					throw new Exception(Yii::t('AdminModule.post', 'Post failure!'));
 			} catch (Exception $e) {
 				Yii::app()->user->setFlash('error', $e->getMessage());
 			}
@@ -237,7 +237,7 @@ class PostController extends AdminController
 					$this->refresh();
 				} else {
 					$model->pic = $oldPicName;
-					Yii::app()->user->setFlash('error', Yii::t('AdminModule.post', 'The article update failed!'));
+					throw new Exception(Yii::t('AdminModule.post', 'The article update failed!'));
 				}
 			} catch (Exception $e) {
 				Yii::app()->user->setFlash('error', $e->getMessage());

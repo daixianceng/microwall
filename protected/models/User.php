@@ -26,11 +26,12 @@ class User extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('name, nickname, role', 'required'),
-			array('password, passwordRepeat', 'required', 'on' => 'insert'),
+			array('nickname', 'required'),
+			array('name, password, passwordRepeat, role', 'required', 'on' => 'insert'),
 			array('name', 'length', 'min' => 3, 'max' => 16),
 			array('name', 'match', 'pattern' => '/^[0-9a-z_-]+$/i'),
-			array('name', 'authenticate'),
+			array('name', 'authenticateName'),
+			array('role', 'authenticateRole'),
 			array('nickname', 'length', 'min' => 3, 'max' => 40),
 			array('password', 'length', 'min' => 6, 'max' => 20),
 			array('password', 'match', 'pattern' => '/^\S+$/i'),
@@ -42,7 +43,7 @@ class User extends CActiveRecord
 		);
 	}
 	
-	public function authenticate($attribute, $params)
+	public function authenticateName($attribute, $params)
 	{
 		if ($this->isNewRecord)
 			$isExists = $this->exists('name=:name', array(':name' => $this->name));
@@ -50,6 +51,13 @@ class User extends CActiveRecord
 			$isExists = $this->exists('name=:name AND id<>:id', array(':name' => $this->name, ':id' => $this->id));
 		if ($isExists)
 			$this->addError($attribute, 'The name has already been token.');
+	}
+	
+	public function authenticateRole($attribute, $params)
+	{
+		$roles = self::getRoles();
+		if (!isset($roles[$this->role]))
+			$this->addError($attribute, 'Role was wrong!');
 	}
 	
 	public function attributeLabels()
@@ -114,7 +122,7 @@ class User extends CActiveRecord
 		if ($image->resize(100, 100))
 			$avatarName = $image->save($tempPath);
 		else
-			$model->addError('avatar', 'Can not resize the image.');
+			throw new Exception('Can not resize the image.');
 		
 		return $avatarName;
 	}
