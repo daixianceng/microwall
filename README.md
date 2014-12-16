@@ -8,13 +8,15 @@ The open source high-performance blog management system
 作者网站：http://microwall.cn
 
 安装步骤：
-=========
+-------
+
     1. 新建数据库，导入/protected/data/data.mysql.sql
     2. 进入/protected/config/main.php和/protected/config/main.tpl修改数据库、用户名及密码
     3. 打开后台，如：index.php/admin或index.php?r=admin，Microwall默认用户名：admin，密码：microwall
 
 功能细节：
-=========
+-------
+
     1. 发布文章限制了很多条件，如：必须上传图片，这是因为默认的主题是必须显示图片的，您可以在开发新的
        主题中进行修改
     2. 当仅仅存入草稿时，只有标题与分类是必须的
@@ -23,6 +25,7 @@ The open source high-performance blog management system
     5. 当进行删除分类等危险操作时，Microwall会检测并且会对用户有一个反馈
     
 问题：
-=========
+-------
+
     1. 在进行分类或页面排序时，可能会出现操作失灵问题，目前并未解决，原因并未发现任何错误
     2. 请确保安装有gd2
